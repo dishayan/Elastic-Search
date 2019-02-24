@@ -1,0 +1,488 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "vpc051a40aa249718e96": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": "10.0.0.0/16",
+                "InstanceTenancy": "default",
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch-vpc"
+                    }
+                ]
+            }
+        },
+        "subnet0b66bf64b1cd4b381": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": "10.0.1.0/24",
+                "AvailabilityZone": "us-east-1a",
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch Public Subnet 1"
+                    }
+                ]
+            }
+        },
+        "subnet02dcf76df07dd6f35": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": "10.0.3.0/24",
+                "AvailabilityZone": "us-east-1b",
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch Public Subnet 2"
+                    }
+                ]
+            }
+        },
+        "subnet00fae43a512a309b2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "CidrBlock": "10.0.5.0/24",
+                "AvailabilityZone": "us-east-1c",
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch Public Subnet 3"
+                    }
+                ]
+            }
+        },
+        "igw014167f7109023bca": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch VPC IGW"
+                    }
+                ]
+            }
+        },
+        "doptc31348b8": {
+            "Type": "AWS::EC2::DHCPOptions",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "elastic-search-dhcp"
+                    }
+                ],
+                "DomainName": "ec2.internal",
+                "DomainNameServers": [
+                    "AmazonProvidedDNS"
+                ]
+            }
+        },
+        "acl0b9f9e415fdb4396b": {
+            "Type": "AWS::EC2::NetworkAcl",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "elastic-nacl"
+                    }
+                ]
+            }
+        },
+        "rtb016aaee7e903bb0a1": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Public Subnet RT"
+                    }
+                ]
+            }
+        },
+        "rtb07f8e70fc8996978f": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "elasticsearch-routetable"
+                    }
+                ]
+            }
+        },
+        "eni03eb19ba3d392f516": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet02dcf76df07dd6f35"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.3.178",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "eni0300561d5651421b2": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet00fae43a512a309b2"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.5.73",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "eni0d03dedcdcabed9c2": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet0b66bf64b1cd4b381"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.1.98",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "eni02250e4ad9988c49b": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet02dcf76df07dd6f35"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.3.138",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "eni0804c47ac75a54fed": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet00fae43a512a309b2"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.5.230",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "eni0d48ebc6f7955989a": {
+            "Type": "AWS::EC2::NetworkInterface",
+            "Properties": {
+                "Description": "ES debasish-es-domain",
+                "SourceDestCheck": "true",
+                "SubnetId": {
+                    "Ref": "subnet0b66bf64b1cd4b381"
+                },
+                "PrivateIpAddresses": [
+                    {
+                        "PrivateIpAddress": "10.0.1.236",
+                        "Primary": "true"
+                    }
+                ],
+                "GroupSet": [
+                    {
+                        "Ref": "sgElasticSearchSG"
+                    }
+                ]
+            }
+        },
+        "s3cftemplates1nj7ufhxcod73useast1": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "Private",
+                "VersioningConfiguration": {
+                    "Status": "Suspended"
+                }
+            }
+        },
+        "sgElasticSearchSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "All access",
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "ElasticSearch SG"
+                    }
+                ]
+            }
+        },
+        "acl1": {
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": "true",
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100",
+                "NetworkAclId": {
+                    "Ref": "acl0b9f9e415fdb4396b"
+                }
+            }
+        },
+        "acl2": {
+            "Type": "AWS::EC2::NetworkAclEntry",
+            "Properties": {
+                "CidrBlock": "0.0.0.0/0",
+                "Protocol": "-1",
+                "RuleAction": "allow",
+                "RuleNumber": "100",
+                "NetworkAclId": {
+                    "Ref": "acl0b9f9e415fdb4396b"
+                }
+            }
+        },
+        "subnetacl1": {
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "NetworkAclId": {
+                    "Ref": "acl0b9f9e415fdb4396b"
+                },
+                "SubnetId": {
+                    "Ref": "subnet02dcf76df07dd6f35"
+                }
+            }
+        },
+        "subnetacl2": {
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "NetworkAclId": {
+                    "Ref": "acl0b9f9e415fdb4396b"
+                },
+                "SubnetId": {
+                    "Ref": "subnet0b66bf64b1cd4b381"
+                }
+            }
+        },
+        "subnetacl3": {
+            "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+            "Properties": {
+                "NetworkAclId": {
+                    "Ref": "acl0b9f9e415fdb4396b"
+                },
+                "SubnetId": {
+                    "Ref": "subnet00fae43a512a309b2"
+                }
+            }
+        },
+        "gw1": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "InternetGatewayId": {
+                    "Ref": "igw014167f7109023bca"
+                }
+            }
+        },
+        "subnetroute1": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "rtb016aaee7e903bb0a1"
+                },
+                "SubnetId": {
+                    "Ref": "subnet00fae43a512a309b2"
+                }
+            }
+        },
+        "subnetroute2": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "rtb016aaee7e903bb0a1"
+                },
+                "SubnetId": {
+                    "Ref": "subnet02dcf76df07dd6f35"
+                }
+            }
+        },
+        "subnetroute3": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "rtb016aaee7e903bb0a1"
+                },
+                "SubnetId": {
+                    "Ref": "subnet0b66bf64b1cd4b381"
+                }
+            }
+        },
+        "route1": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "RouteTableId": {
+                    "Ref": "rtb016aaee7e903bb0a1"
+                },
+                "GatewayId": {
+                    "Ref": "igw014167f7109023bca"
+                }
+            },
+            "DependsOn": "gw1"
+        },
+        "dchpassoc1": {
+            "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "vpc051a40aa249718e96"
+                },
+                "DhcpOptionsId": {
+                    "Ref": "doptc31348b8"
+                }
+            }
+        },
+        "ingress1": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "sgElasticSearchSG"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "22",
+                "ToPort": "22",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+        "ingress2": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "sgElasticSearchSG"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "443",
+                "ToPort": "443",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+        "egress1": {
+            "Type": "AWS::EC2::SecurityGroupEgress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "sgElasticSearchSG"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "0",
+                "ToPort": "65535",
+                "CidrIp": "0.0.0.0/0"
+            }
+        },
+        "ElasticsearchDomain": {
+            "Type": "AWS::Elasticsearch::Domain",
+            "Properties": {
+                "DomainName": "dishayan",
+                "ElasticsearchClusterConfig": {
+                    "DedicatedMasterEnabled": "true",
+                    "InstanceCount": "2",
+                    "ZoneAwarenessEnabled": "true",
+                    "InstanceType": "m3.medium.elasticsearch",
+                    "DedicatedMasterType": "m3.medium.elasticsearch",
+                    "DedicatedMasterCount": "3"
+                },
+                "EBSOptions": {
+                    "EBSEnabled": true,
+                    "Iops": 0,
+                    "VolumeSize": 20,
+                    "VolumeType": "gp2"
+                },
+                "SnapshotOptions": {
+                    "AutomatedSnapshotStartHour": "0"
+                },
+                "AccessPolicies": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "arn:aws:iam::584065906377:root"
+                            },
+                            "Action": "es:*",
+                            "Resource": "arn:aws:es:us-east-1:584065906377:domain/dishayan/*"
+                        }
+                    ]
+                },
+                "AdvancedOptions": {
+                    "rest.action.multi.allow_explicit_index": "true"
+                }
+            }
+        }
+    }
+}
+
