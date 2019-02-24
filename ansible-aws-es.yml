@@ -1,0 +1,15 @@
+- name: provision stack
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  # Launch the deb_final_ES.template.
+
+  tasks:
+  - name: launch ansible cloudformation 
+    cloudformation: >
+      stack_name="ansible-cloudformation" 
+      state=present
+      region=us-east-1 
+      disable_rollback=true
+      template_url=https://s3.amazonaws.com/deba-bkt/deb_final_ES.template
