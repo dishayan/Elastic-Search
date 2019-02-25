@@ -1,4 +1,4 @@
-# Code list
+# [ Duration of the lab 1.5 hrours ]
 
 YAML format code: - elasticsearch.yml which will be used by ansible playbook
 
