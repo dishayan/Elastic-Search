@@ -19,3 +19,19 @@ Step -4: Run the ansible playbook.
          # ansible-playbook ansible-aws-es.yml
          
 Step -5: It will take 10 min to up the ElasticSearch which you can confirm on aws console. To confirm its running, you need to check the status should be"green".
+
+
+
+# Some answers we are looking:
+1. What did you choose to automate the provisioning and bootstrapping of the instance? Why? 2. How did you choose to secure ElasticSearch? Why?
+         cloudformation, ansible-playbook with boto3 module
+3. How would you monitor this instance? What metrics would you monitor?
+         Available disk space, I/O utilization,CPU usage,Network bytes sent/received, Number of HTTP connections currently open, Total number of HTTP connections opened over time and many more.
+4. Could you extend your solution to launch a secure cluster of ElasticSearch nodes? What would need to change to support this use case?
+         can also optionally enable TLS on the HTTP layer
+5. Could you extend your solution to replace a running ElasticSearch instance with little or no downtime? How?
+         It is quite possible to make schema/mapping changes with zero downtime
+6. Was it a priority to make your code well structured, extensible, and reusable?
+         Yes
+7. What sacrifices did you make due to time?
+         None
