@@ -23,7 +23,8 @@ Step -5: It will take 10 min to up the ElasticSearch which you can confirm on aw
 
 
 # Some answers we are looking:
-1. What did you choose to automate the provisioning and bootstrapping of the instance? Why? 2. How did you choose to secure ElasticSearch? Why?     
+1. What did you choose to automate the provisioning and bootstrapping of the instance? Why? 2. How did you choose to secure ElasticSearch? Why?
+         
          cloudformation, ansible-playbook with boto3 module
          
 3. How would you monitor this instance? What metrics would you monitor?
