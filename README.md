@@ -1,5 +1,8 @@
-#YAML format code: - elasticsearch.yml
-#JSON format code: - elasticsearch.template
+# Code list
+
+YAML format code: - elasticsearch.yml which will be used by ansible playbook
+
+JSON format code: - elasticsearch.template which will be called above code to make cloudformation stack
 
 Above code is to create 3 node Elasticsearch cluster on AWS
 
